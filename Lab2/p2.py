@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: Not titled yet
+# Title: DSB-SC
 # Author: pranav
 # GNU Radio version: 3.8.3.1
 
@@ -40,9 +40,9 @@ from gnuradio import qtgui
 class p2(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Not titled yet")
+        gr.top_block.__init__(self, "DSB-SC")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Not titled yet")
+        self.setWindowTitle("DSB-SC")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -79,11 +79,6 @@ class p2(gr.top_block, Qt.QWidget):
         ##################################################
         # Blocks
         ##################################################
-        self.rational_resampler_xxx_0_0 = filter.rational_resampler_fff(
-                interpolation=48,
-                decimation=1200,
-                taps=None,
-                fractional_bw=0.4)
         self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
                 interpolation=1200,
                 decimation=48,
@@ -93,7 +88,7 @@ class p2(gr.top_block, Qt.QWidget):
             1024, #size
             firdes.WIN_BLACKMAN_hARRIS, #wintype
             0, #fc
-            samp_rate, #bw
+            quadrature_rate, #bw
             "", #name
             1
         )
@@ -132,30 +127,16 @@ class p2(gr.top_block, Qt.QWidget):
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_0_win)
         self.message_0 = analog.sig_source_f(quadrature_rate, analog.GR_COS_WAVE, 500e3, 1, 0, 0)
         self.message = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 10000, 1, 0, 0)
-        self.low_pass_filter_0 = filter.fir_filter_fff(
-            1,
-            firdes.low_pass(
-                1,
-                samp_rate,
-                15e3,
-                10,
-                firdes.WIN_HAMMING,
-                6.76))
-        self.blocks_multiply_xx_1 = blocks.multiply_vff(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vff(1)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_multiply_xx_1, 1))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.rational_resampler_xxx_0_0, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
         self.connect((self.message, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.message_0, 0), (self.blocks_multiply_xx_0, 1))
-        self.connect((self.message_0, 0), (self.blocks_multiply_xx_1, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.blocks_multiply_xx_0, 0))
-        self.connect((self.rational_resampler_xxx_0_0, 0), (self.low_pass_filter_0, 0))
 
 
     def closeEvent(self, event):
@@ -168,9 +149,7 @@ class p2(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 15e3, 10, firdes.WIN_HAMMING, 6.76))
         self.message.set_sampling_freq(self.samp_rate)
-        self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.samp_rate)
 
     def get_quadrature_rate(self):
         return self.quadrature_rate
@@ -178,6 +157,7 @@ class p2(gr.top_block, Qt.QWidget):
     def set_quadrature_rate(self, quadrature_rate):
         self.quadrature_rate = quadrature_rate
         self.message_0.set_sampling_freq(self.quadrature_rate)
+        self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.quadrature_rate)
 
 
 

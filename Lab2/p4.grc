@@ -21,7 +21,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Not titled yet
+    title: IQ Modulation/Demodulation
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 16.0]
+    coordinate: [384, 16.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -53,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 12]
+    coordinate: [248, 8.0]
     rotation: 0
     state: enabled
 - name: analog_sig_source_x_0

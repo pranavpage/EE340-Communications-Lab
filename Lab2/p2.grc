@@ -21,7 +21,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Not titled yet
+    title: DSB-SC
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -91,7 +91,7 @@ blocks:
     bus_structure: null
     coordinate: [784, 136.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -115,7 +115,7 @@ blocks:
     bus_structure: null
     coordinate: [1168, 96.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: message
   id: analog_sig_source_x
   parameters:
@@ -258,7 +258,7 @@ blocks:
     autoscale: 'False'
     average: '1.0'
     axislabels: 'True'
-    bw: samp_rate
+    bw: quadrature_rate
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -359,11 +359,12 @@ blocks:
     bus_structure: null
     coordinate: [928, 180.0]
     rotation: 0
-    state: true
+    state: disabled
 
 connections:
 - [blocks_multiply_xx_0, '0', blocks_multiply_xx_1, '1']
 - [blocks_multiply_xx_0, '0', qtgui_freq_sink_x_0, '0']
+- [blocks_multiply_xx_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [blocks_multiply_xx_1, '0', rational_resampler_xxx_0_0, '0']
 - [low_pass_filter_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [message, '0', rational_resampler_xxx_0, '0']
